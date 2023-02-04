@@ -1,41 +1,58 @@
 #include <iostream>
-#include "array.h"
+#include "Func.h"
+#include "sorts.h"
 
-int get_max(const int* ar, int size){
-	static int depth_rec = 0;
-	depth_rec++;
-	if (size == 1){
-		std::cout << "Глубина рекурсииg get_max: " << depth_rec << std::endl;
-		return ar[0];
-	}
-	int maxx = get_max(ar, --size);
-	if (ar[size-1] > maxx)
-		return ar[size-1];
-	return maxx;
+void task_0(){
+	int size = 1000;
+	int ar[size];
+	random_Fill_ar(ar, size, 0, 200);
+	show_ar_task0(ar, size, '\n');
 }
 
-int get_min(const int* ar, int size){
-	static int depth_rec = 0;
-	depth_rec++;
-	if (size == 1){
-		std::cout << "Глубина рекурсии get_min: " << depth_rec << std::endl;
-		return ar[0];
+void task_1(){
+	int size = 100;
+	int ar[size];
+	random_Fill_ar(ar, size, 100, 150);
+	count_sort(ar, size, 100, 150);
+	showEl(ar, size);
+
+	int maxx_period = 1;
+	int maxx_period_el = ar[0];
+	int minn_period = size;
+	int minn_period_el = ar[0];
+	for (int i = 0, j = 0; i < size; i+=j){
+		j = i;
+		while (ar[j] == ar[j+1])
+			j++;
+		j++;
+		if (j-i > maxx_period){
+			maxx_period = j-i;
+			maxx_period_el = ar[j-1];
+		}
+		if (j-i < minn_period){
+			minn_period = j-i;
+			minn_period_el = ar[j-1];
+		}
 	}
-	int minn = get_min(ar, --size);
-	if (ar[size-1] < minn)
-		return ar[size-1];
-	return minn;
+
+	std::cout << "Самый частый элемент: " << maxx_period_el << "\t" << "Частота " << maxx_period << std::endl;
+	std::cout << "Самый редкий элемент: " << minn_period_el << "\t" << "Частота " << minn_period << std::endl;
 }
 
-int main(){	
-
+void task_2(){
 	int ar[100];
-	random_Fill_ar(ar, 100, 100, 150);
+	random_Fill_ar(ar, 100, 0, 150);
 	show_ar(ar, 100);
 	int maxx = get_max(ar, 100);
 	int minn = get_min(ar, 100);
 	std::cout << "Максимальный элемент массива: " << maxx << std::endl;
 	std::cout << "Минимальный элемент массива: " << minn << std::endl;
+}
+
+int main(){	
+	task_0();
+	task_1();
+	task_2();
 
 	return 0;
 }
